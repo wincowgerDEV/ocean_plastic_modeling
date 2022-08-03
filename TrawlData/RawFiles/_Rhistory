@@ -1,0 +1,235 @@
+?t.test
+library(dplyr)
+install.packages("dplyr")
+library(dplyr)
+attach(iris)
+setwd(E:Statistics/5Gyres)
+setwd(E:/Statistics/5Gyres)
+setwd(E:\Statistics\5Gyres)
+setwd(E:Statistics\5Gyres)
+setwd(E:)
+setwd(E:\)
+setwd(E:\)
+wd
+library(readr)
+DataUpdate10 <- read_csv("E:/Statistics/5Gyres/DataUpdate10.csv")
+View(DataUpdate10)
+library(readr)
+DataUpdate10 <- read_csv("E:/Statistics/5Gyres/DataUpdate10.csv")
+View(DataUpdate10)
+class(DataUpdate10)
+class(DataUpdate10$`Microplastics #/km^2`) #The species variable is a factor
+levels(DataUpdate10$Source) #We see three different species
+class(DataUpdate10$Source) #The species variable is a factor
+?levels()
+DataUpdate10[DataUpdate10$Source == 'SEA Education',] #Before the comma, because we're selecting particular rows
+SeaEd <- DataUpdate10[DataUpdate10$Source == 'SEA Education',] #Before the comma, because we're selecting particular rows
+SeaChange <- DataUpdate10[DataUpdate10$Source == '5 Gyres SEA Change 2015',]
+levels(factor(DataUpdate10$Source))
+class(DataUpdate10$SeaEd)
+class(SeaEd)
+X <- split(DataUpdate10, DataUpdate10$Source)
+str(X)
+names(X) <- c("5 Gyres SEA Change 2015","5Gyres Belize","C. Moore", "Carpenter 1972",  "Cozar","Cozar 2015"
+"Cozar 2017","Day 1989","Doyle 2011",                                        "F.Galgani",
+"Fossi et al. 2016",                                 "Gewert 2017",
+"Goldstien",                                         "H. Carson",
+"Isobe 2015",                                        "J. Reisser",
+"M. Eriksen",                                        "M. Thiel",
+"Morris 1980",                                       "Ocean Research Project, Plastic Tow Log 2014-2015",
+"Olgac 2017",                                        "Ory 2017",
+"Panti et al 2015",                                  "Peter Ryan",
+"Plastic Change",                                    "SEA Education",
+"Sea Shepard",                                       "Shaw 1975",
+"Suaria 2016",                                       "Theil 2015",
+"Trawl on Sea Dragon - eXXpedition 2014",            "Viking June 2016",
+"ZHAO 2014")
+names(X) <- c("5 Gyres SEA Change 2015", "5Gyres Belize", "C. Moore", "Carpenter 1972",  "Cozar", "Cozar 2015",
+"Cozar 2017", "Day 1989", "Doyle 2011",                                        "F.Galgani",
+"Fossi et al. 2016",                                 "Gewert 2017",
+"Goldstien",                                         "H. Carson",
+"Isobe 2015",                                        "J. Reisser",
+"M. Eriksen",                                        "M. Thiel",
+"Morris 1980",                                       "Ocean Research Project, Plastic Tow Log 2014-2015",
+"Olgac 2017",                                        "Ory 2017",
+"Panti et al 2015",                                  "Peter Ryan",
+"Plastic Change",                                    "SEA Education",
+"Sea Shepard",                                       "Shaw 1975",
+"Suaria 2016",                                       "Theil 2015",
+"Trawl on Sea Dragon - eXXpedition 2014",            "Viking June 2016",
+"ZHAO 2014")
+list2env(X, envir = .GlobalEnv)
+View(SeaChange)
+library(readr)
+ChrisTemplate <- read_csv("E:/Statistics/5Gyres/ChrisTemplate.csv")
+View(ChrisTemplate)
+install.packages("geosphere")
+library("geosphere", lib.loc="~/R/win-library/3.4")
+View(ChrisTemplate)
+DataUpdate10[ ,c("Ship","CruiseNo")] <- NA
+DataUpdate10[ ,c("Ship","CruiseNo", "CruiseNoCode", "StationNo", "TimeLocal", "TimeLocalFormatted", "MonthUTC", "DayUTC", "YearUTC", "TowAreaM2", "CountPlasticFragments", "CountPlasticPellets", "CountTotalPlastics", "FragmentDensityNoSqKm", "PelletDensityNoSqKm", "u10Mps", "v10Mps")] <- NA
+DataUpdate10 <- read_csv("E:/Statistics/5Gyres/DataUpdate10.csv")
+class(DataUpdate10)
+levels(factor(DataUpdate10$Source))
+ChrisTemplate <- read_csv("E:/Statistics/5Gyres/ChrisTemplate.csv")
+#Add Chris' Column Names
+DataUpdate10[ ,c("Ship","CruiseNo", "CruiseNoCode", "StationNo", "TimeLocal", "TimeLocalFormatted", "MonthUTC", "DayUTC", "YearUTC", "TowAreaM2", "CountPlasticFragments", "CountPlasticPellets", "CountTotalPlastics", "FragmentDensityNoSqKm", "PelletDensityNoSqKm", "u10Mps", "v10Mps")] <- NA
+#Split Data
+X <- split(DataUpdate10, DataUpdate10$Source)
+str(X)
+names(X) <- c("5 Gyres SEA Change 2015", "5Gyres Belize", "C. Moore", "Carpenter 1972",  "Cozar", "Cozar 2015",
+"Cozar 2017", "Day 1989", "Doyle 2011",                                        "F.Galgani",
+"Fossi et al. 2016",                                 "Gewert 2017",
+"Goldstien",                                         "H. Carson",
+"Isobe 2015",                                        "J. Reisser",
+"M. Eriksen",                                        "M. Thiel",
+"Morris 1980",                                       "Ocean Research Project, Plastic Tow Log 2014-2015",
+"Olgac 2017",                                        "Ory 2017",
+"Panti et al 2015",                                  "Peter Ryan",
+"Plastic Change",                                    "SEA Education",
+"Sea Shepard",                                       "Shaw 1975",
+"Suaria 2016",                                       "Theil 2015",
+"Trawl on Sea Dragon - eXXpedition 2014",            "Viking June 2016",
+"ZHAO 2014")
+list2env(X, envir = .GlobalEnv)
+View(`5 Gyres SEA Change 2015`)
+drops <- c("conc")
+DataUpdate10[ , !(names(DF) %in% drops)]
+drops <- c("conc")
+DataUpdate10[ , !(names(DataUpdate10) %in% drops)]
+drops <- c("Conc")
+DataUpdate10[ , !(names(DataUpdate10) %in% drops)]
+View(DataUpdate10)
+drops <- c("Conc")
+DataUpdate10[ , drops, drop=FALSE)]
+DataUpdate10[ , drops, drop= FALSE]
+DataUpdate10[ , drops, drop= True]
+DataUpdate10[,-c("Conc")]
+DataUpdate10 <- subset( DataUpdate10, select = -"Conc" )
+DataUpdate10 <- subset( DataUpdate10, select = -Conc )
+View(DataUpdate10)
+?list.files
+Old_files <- list.files(path = "E:\Statistics\5Gyres\OrigFiles", pattern = "\\.csv$")
+Old_files <- list.files(path = "E:/Statistics/5Gyres/OrigFiles", pattern = "\\.csv$")
+Old_files
+Old_files <- lapply(Old_files, read.csv)
+setwd(E:/Statistics/5Gyres/OrigFiles)
+setwd("E:/Statistics/5Gyres/OrigFiles")
+Old_files <- lapply(Old_files, read.csv)
+names(Old_files) <- gsub("\\.csv$", "", Old_files)
+names(Old_files) <- stringr::str_replace(Old_files, pattern = ".csv", replacement = "")
+big_data = data.table::rbindlist(X)
+View(big_data)
+DataUpdate10[ ,c("TopLim", "Ship","CruiseNo", "CruiseNoCode", "StationNo", "TimeLocal", "TimeLocalFormatted", "MonthUTC", "DayUTC", "YearUTC", "TowAreaM2", "CountPlasticFragments", "CountPlasticPellets", "CountTotalPlastics", "FragmentDensityNoSqKm", "PelletDensityNoSqKm", "u10Mps", "v10Mps")] <- NA
+DataUpdate10 <- subset( DataUpdate10, select = -Conc )
+SEAEd1 <- read_csv("SEAEd1.csv")
+read_csv("SEAEd1.csv","SEAEd2")
+SEAED <- read_csv("SEAEd1.csv","SEAEd2")
+SEAED <- read_csv("SEAEd1.csv","SEAEd2.csv")
+View(SEAED)
+SEAEd1 <- read_csv("SEAEd1.csv")
+?list.files
+get.wd(E:/Statistics/5Gyres/OrigFiles)
+get.wd(E:Statistics/5Gyres/OrigFiles)
+my_files <- list.files(pattern = "\\.csv$", all.files = TRUE)
+my_data <- lapply(my_files, read.csv)
+names(my_data) <- stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+my_data <- lapply(my_files, read.csv, header=T)
+names(my_data) <- stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+my_data=lapply(my_data,"[",,2)
+my_data2=lapply(my_data,function(x)x[,1])
+my_data=lapply(my_data,"[[",,2)
+my_data=lapply(my_data,"[[",,1)
+my_data <- lapply(my_files, read.csv, header=T)
+names(my_data) <- stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+my_data=lapply(my_data,"[[",,1)
+my_data=lapply(my_data,"[",,1)
+my_data <- na.omit(my_data)
+View(`Viking June 2016`)
+list2env(my_data, envir = .GlobalEnv)
+my_files = list.files(pattern = "\\.csv$", all.files = TRUE)
+my_data = lapply(my_files, read.csv, header=T)
+names(my_data) = stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+list2env(my_data, envir = .GlobalEnv)
+View(`5Gyres2`)
+5Gyres3 = na.omit(5Gyres2)
+install.packages("dplyr")
+library("dplyr", lib.loc="~/R/win-library/3.4")
+library("plyr", lib.loc="~/R/win-library/3.4")
+5Gyres3 = na.omit(5Gyres2)
+?na.omit
+5Gyres3 = 5Gyres2[complete.cases(5Gyres2),]
+?complete.cases
+library("stats", lib.loc="C:/Program Files/R/R-3.4.1/library")
+5Gyres3 = 5Gyres2[complete.cases(5Gyres2),]
+View(`5Gyres2`)
+Cozar2[complete.cases(Cozar2),3]
+Cozar3 = Cozar2[complete.cases(Cozar2),3]
+Cozar3 = Cozar2[complete.cases(Cozar2[,3]),]
+my_data2 = my_data[complete.cases(my_data[,3]),]
+clean_data <- lapply(my_data, function(x) my_data[complete.cases(my_data[,3]),])
+clean_data <- lapply(my_data, function(my_data) my_data[complete.cases(my_data[,3]),])
+get.wd(E:Statistics/5Gyres/OrigFiles)
+my_files = list.files(pattern = "\\.csv$", all.files = TRUE)
+my_data = lapply(my_files, read.csv, header=T)
+names(my_data) = stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+clean_data <- lapply(my_data, function(my_data) my_data[complete.cases(my_data[,3]),]) #remove data with NA in Month
+list2env(my_data, envir = .GlobalEnv)
+View(Olgac2)
+list2env(clean_data, envir = .GlobalEnv)
+get.wd(E:Statistics/5Gyres/OrigFiles)
+my_files = list.files(pattern = "\\.csv$", all.files = TRUE)
+my_data = lapply(my_files, read.csv, header=T)
+names(my_data) = stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+clean_data <- lapply(my_data, function(my_data) my_data[complete.cases(my_data[,3]),]) #remove data with NA in Month
+list2env(clean_data, envir = .GlobalEnv)
+View(Eriksen)
+get.wd(E:Statistics/5Gyres/OrigFiles)
+my_files = list.files(pattern = "\\.csv$", all.files = TRUE)
+my_data = lapply(my_files, read.csv, header=T)
+names(my_data) = stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+clean_data <- lapply(my_data, function(my_data) my_data[complete.cases(my_data[,2]),]) #remove data with NA in Month
+list2env(clean_data, envir = .GlobalEnv)
+View(Isobe)
+get.wd(E:Statistics/5Gyres/OrigFiles)
+my_files = list.files(pattern = "\\.csv$", all.files = TRUE)
+my_data = lapply(my_files, read.csv, header=T)
+names(my_data) = stringr::str_replace(my_files, pattern = ".csv", replacement = "")
+clean_data <- lapply(my_data, function(my_data) my_data[complete.cases(my_data[,1]),]) #remove data with NA in Month
+list2env(clean_data, envir = .GlobalEnv)
+View(Day)
+View(SeaChange2)
+View(`5Gyres2`)
+View(SeaChange2)
+View(`5Gyres2`)
+View(Carpenter2)
+View(SeaChange2)
+View(`5Gyres2`)
+View(Carpenter2)
+View(Cozar1)
+View(Cozar2)
+View(Cozar1)
+View(Cozar3)
+View(Day)
+View(Doyle)
+View(Gewert)
+View(Goldstein)
+View(Isobe)
+View(Morris)
+View(Ocean2)
+View(Olgac2)
+View(Osha2)
+View(Panti2)
+View(PlasticCha2)
+View(SeaChange2)
+View(SeaDragon2)
+View(SEAEd1)
+View(SEAEd2)
+View(SEAED3)
+View(SeaShepard2)
+View(Shaw2)
+View(Suaria2)
+View(Syakti)
+View(Viking2)
+View(ZHAO2)
+View(ZHAO2)
