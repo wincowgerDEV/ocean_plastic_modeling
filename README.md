@@ -6,7 +6,6 @@
 - OceanTimeTrend.R: Creates the ocean plastic time trend model. 
 - WindAnalysis.R: Conducts wind correction for the ocean plastic observations. 
 
-
 ## Full ocean observation dataset for modeling is [HERE](https://github.com/wincowgerDEV/ocean_plastic_modeling/blob/main/TrawlData/ProcessedFiles/LocationsCleanedWithWind.csv)
 Metadata:
 - Day: Day of the month
@@ -34,9 +33,9 @@ Metadata:
 - PelletDensityNoSqKm: concentration of plastic pellets in number per square kilometer. 
 - v10Mps: wind speed in meters per second if provided. 
 
-## TrawlData/RawFiles holds the raw data from all datasets that were merged to build the dataset used in this study. 
+## [TrawlData/RawFiles](https://github.com/wincowgerDEV/ocean_plastic_modeling/tree/main/TrawlData/RawFiles) holds the raw data from all datasets that were merged to build the dataset used in this study. 
 
-## Wind monthly holds the monthly wind raster grid used to assess historic wind conditions. 
+## [WindMonthly](https://github.com/wincowgerDEV/ocean_plastic_modeling/tree/main/WindMonthly) holds the monthly wind raster grid used to assess historic wind conditions. 
 
-## Model grid holds the oceanographic model used as a reference for expected concentrations. 
+## [ModelGrid](https://github.com/wincowgerDEV/ocean_plastic_modeling/tree/main/ModelGrid) holds the oceanographic model used as a reference for expected concentrations. 
 
