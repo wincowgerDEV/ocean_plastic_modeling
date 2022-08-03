@@ -11,6 +11,7 @@ library(ggplot2)
 
 
 #Wind Correction ----
+#Function conducts transformation to correct for wind in the observed concentrations.
 WindStandard <- function(Concentration,Wind) {
     Rise = 0.02
     Depth = 0.2
@@ -43,21 +44,22 @@ WindStandard <- function(Concentration,Wind) {
 
 #Grab Wind Data from URLs----
 
-URL <- "https://www.ncei.noaa.gov/thredds/fileServer/uv/daily/2000s/uv" #Partial URL to Grab the data from
-TrawlData <- read.csv("TrawlData/ProcessedFiles/FinalMerge.csv") #Lat Long Points and date
-Date <- sort(unique(paste(TrawlData$Year,ifelse(TrawlData$Month < 10, paste("0", as.character(TrawlData$Month), sep=""), as.character(TrawlData$Month)),ifelse(TrawlData$Day < 10, paste("0", as.character(TrawlData$Day), sep=""), as.character(TrawlData$Day)), sep = ""))) #The rest of the URL
-DateTwoThou <- as.numeric(Date)[as.numeric(Date) > 20150915] #Cropping the rest of the URL
-DateTwoThou <- DateTwoThou[!is.na(DateTwoThou)]
+#URL <- "https://www.ncei.noaa.gov/thredds/fileServer/uv/daily/2000s/uv" #Partial URL to Grab the data from
+#TrawlData <- read.csv("TrawlData/ProcessedFiles/FinalMerge.csv") #Lat Long Points and date
+#Date <- sort(unique(paste(TrawlData$Year,ifelse(TrawlData$Month < 10, paste("0", as.character(TrawlData$Month), sep=""), as.character(TrawlData$Month)),ifelse(TrawlData$Day < 10, paste("0", as.character(TrawlData$Day), sep=""), as.character(TrawlData$Day)), sep = ""))) #The rest of the URL
+#DateTwoThou <- as.numeric(Date)[as.numeric(Date) > 20150915] #Cropping the rest of the URL
+#DateTwoThou <- DateTwoThou[!is.na(DateTwoThou)]
 #DateTwoThou <- DateTwoThou[2:2554] #cropping the url more
 #DateTwoThou <- DateTwoThou[2:10]
-Folder <- "WindMonthly/" #The folder the downloaded data will go to
-for(Day in DateTwoThou ){
-  download.file(url = paste(URL, Day, "rt.nc", sep = ""), destfile = paste(Folder, Day, ".nc", sep = ""), mode = "wb" )
-}
+#Folder <- "WindMonthly/" #The folder the downloaded data will go to
+#for(Day in DateTwoThou ){
+#  download.file(url = paste(URL, Day, "rt.nc", sep = ""), destfile = paste(Folder, Day, ".nc", sep = ""), mode = "wb" )
+#}
 
-###ScrapeWindDataFrom All Points
+###ScrapeWindDataFrom All Survey Points ----
+
 Location <- read.csv("TrawlData/ProcessedFiles/FinalMerge.csv")
-#summary(Location)
+
 correctedsources <- c("C. Moore", "F.Galgani", "H.Carson", "J. Reisser", "M. Eriksen", "Cozar 2015", "Cozar 2017")
 
 LocationDF <- Location %>%
@@ -69,23 +71,8 @@ LocationDF <- Location %>%
   mutate(Corrected = ifelse(Source %in% correctedsources, "Yes", "No")) %>%
   rename(Lon = Longitude, Lat = Latitude, km2 = X..km2, Micro = Microplastics...km.2, Macro = Macroplastics....km.2, MeasuredWind = v10Mps)
 
-#names(LocationDF) <- c("Lat","Lon","Month", "Day", "Year", "km2", "Micro", "Macro", "Source", "Notes", "MeasuredWind", "Corrected")#, "Distance")
-#FindCorrected <- Locations %>%
- # group_by(Notes, Source) %>%
-  #summarise(count = n())
-
-#Locations <- LocationDF
-#Locations$LonErik<- ifelse(Locations$Lon<0,Locations$Lon + 361,Locations$Lon)
-#coordinates(Locations) <- ~LonErik + Lat
-
-#LocationTest <- Locations
-#proj4string(LocationTest) = ("+proj=longlat +a=6367470 +b=6367470 +no_defs")
-#crs(wind)
-#row = 1000
-
-#wind <- readGDAL(paste("G:/My Drive/GrayLab/Projects/Plastics/ActiveProjects/OceanModeling/OceanTimeTrend/Data/Processed Data/WindMonthly/ei.moda.an.sfc.regn128sc.", 1998, 10,  "0100.cowger407132", sep = ""))
-#summarise(wind)
-
+# Extract all wind data from historic record ----
+# Takes a long time, could be optimized. 
 for(row in 1:nrow(LocationDF)) {
   if(LocationDF[row, "Year"] < 1979) next
   wind <- readGDAL(paste("WindMonthly/ei.moda.an.sfc.regn128sc.", LocationDF[row, "Year"], ifelse(LocationDF[row, "Month"] > 9, LocationDF[row, "Month"], paste("0", LocationDF[row, "Month"], sep = "")),  "0100.cowger407132", sep = ""))
@@ -93,12 +80,13 @@ for(row in 1:nrow(LocationDF)) {
   LocationDF[row, "wind"] <- raster::extract(wind, Locations[row,], method='simple')
 }
 
-
 #Tested to make sure it didn't matter if the projection was there. It doesn't.
 #wind <- readGDAL(paste("G:/My Drive/GrayLab/Plastics/Articles Publish/Active/OceanTimeTrend/WindMonthly/ei.moda.an.sfc.regn128sc.", LocationDF[100, "Year"], ifelse(LocationDF[100, "Month"] > 9, LocationDF[100, "Month"], paste("0", LocationDF[100, "Month"], sep = "")),  "0100.cowger407132", sep = ""))
 #try<-  extract(wind, Locations[100,], method='simple')
 #Try<- extract(wind, LocationTest[100,], method='simple')
 
+# Conduct correction with the new wind data ----
 LocationDF$CorrectedConcentration <- ifelse(LocationDF$Corrected == "Yes", LocationDF$km2, WindStandard(LocationDF$km2, LocationDF$wind))
 
+# Write the corrected dataset ----
 write.csv(LocationDF, "TrawlData/ProcessedFiles/LocationsCleanedWithWind.csv")
