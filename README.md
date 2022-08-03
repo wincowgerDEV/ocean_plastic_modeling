@@ -5,6 +5,7 @@
 ## Code
 - OceanTimeTrend.R: Creates the ocean plastic time trend model. 
 - WindAnalysis.R: Conducts wind correction for the ocean plastic observations. 
+- SessionInfo.txt: Current working libraries, softwares, and versions. 
 
 ## Full ocean observation dataset for modeling is [HERE](https://github.com/wincowgerDEV/ocean_plastic_modeling/blob/main/TrawlData/ProcessedFiles/LocationsCleanedWithWind.csv)
 Metadata:
