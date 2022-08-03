@@ -1,5 +1,3 @@
-#Working Directory ----
-setwd("G:/My Drive/GrayLab/Projects/Plastics/ActiveProjects/OceanModeling/OceanTimeTrend/Data/Processed Data")
 
 #Libraries ----
 library(sp)  # classes for spatial data
