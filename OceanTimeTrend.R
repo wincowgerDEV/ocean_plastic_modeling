@@ -15,8 +15,7 @@ library(NADA)
 
 
 #Functions ----
-theme_gray_etal<- function(base_size = 12, bgcolor = NA) 
-{
+theme_gray_etal<- function(base_size = 12, bgcolor = NA){
     half_line <- base_size/2
     theme(
         line = element_line(colour = "black", size = rel(1.5), 
