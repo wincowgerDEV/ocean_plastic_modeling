@@ -12,6 +12,8 @@ library(tidyr)
 library(plotly)
 library(NADA)
 
+
+
 #Functions ----
 theme_gray_etal<- function(base_size = 12, bgcolor = NA) 
 {
@@ -197,6 +199,8 @@ plot(time)
 summary_uncertainties <- Dataset %>%
     group_by(Year, Basin) %>%
     summarize(count = n(), cv = sd(fitkm2)/mean(fitkm2))
+
+write.csv(summary_uncertainties, "uncertainties.csv")
 
 ggplot(summary_uncertainties) + geom_point(aes(x = Year, y = count, color = Basin, shape = Basin), size = 5, alpha = 0.75) + scale_color_viridis_d() + scale_y_log10() + theme_gray_etal()
 ggplot(summary_uncertainties) + geom_point(aes(x = Year, y = cv, color = Basin, shape = Basin), size = 5, alpha = 0.75) + scale_y_continuous(limits = c(0, 15)) + scale_color_viridis_d()  + theme_gray_etal()
