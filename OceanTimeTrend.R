@@ -3,52 +3,83 @@
 library(sp)  # classes for spatial data
 library(raster)  # grids, rasters
 library(rasterVis)  # raster visualisation
-library(maptools)
 library(rgeos)
-library(dismo)
 library(rgdal)
 library(mgcv)
 library(ggplot2)
 library(dplyr)
-library(leaflet)
-library(viridis)
-library(gridExtra)
-library(purrr)
 library(tidyr)
-library(magick)
 library(plotly)
 library(NADA)
-library(EnvStats)
 
-
-#Functions----
-
-BootMedian <- function(data) {
-  B <- 10000
-  ave <- numeric(B)
-  n = length(data)
-  
-  set.seed(34345)
-  for (i in 1:B) {
-    boot <- sample(1:n, size=n, replace = TRUE)
-    ave[i] <- mean(data[boot])
-  }
-  return(quantile(ave, c(0.025, 0.5, 0.975), na.rm = T))
+#Functions ----
+theme_gray_etal<- function(base_size = 12, bgcolor = NA) 
+{
+    half_line <- base_size/2
+    theme(
+        line = element_line(colour = "black", size = rel(1.5), 
+                            linetype = 1, lineend = "butt"), 
+        rect = element_rect(fill = NA, colour = "black",
+                            size = 0.5, linetype = 1),
+        text = element_text(face = "plain",
+                            colour = "black", size = base_size,
+                            lineheight = 0.9,  hjust = 0.5,
+                            vjust = 0.5, angle = 0, 
+                            margin = margin(), debug = FALSE), 
+        
+        axis.line = element_blank(), 
+        axis.text = element_text(size = rel(1.5), colour = "grey10"),
+        axis.text.x = element_text(margin = margin(t = half_line/2), 
+                                   vjust = 1), 
+        axis.text.y = element_text(margin = margin(r = half_line/2),
+                                   hjust = 1),
+        axis.ticks = element_line(colour = "black", size=1), 
+        axis.ticks.length = unit(half_line*0.75, "pt"), 
+        axis.title = element_text(size = rel(1.5), colour = "black"),
+        axis.title.x = element_text(margin = margin(t = half_line*5,
+                                                    b = half_line)),
+        axis.title.y = element_text(angle = 90, 
+                                    margin = margin(r = half_line*5,
+                                                    l = half_line)),
+        
+        legend.background = element_rect(colour = NA), 
+        legend.key = element_rect(colour = NA),
+        legend.key.size = unit(2, "lines"), 
+        legend.key.height = NULL,
+        legend.key.width = NULL, 
+        legend.text = element_text(size = rel(1)),
+        legend.text.align = NULL,
+        legend.title = element_text(size = rel(1)), 
+        legend.title.align = NULL, 
+        legend.position = "right", 
+        legend.direction = NULL,
+        legend.justification = "center", 
+        legend.box = NULL, 
+        
+        panel.background = element_rect(fill=bgcolor,colour = "black", size = 2), 
+        panel.grid.major = element_blank(), 
+        panel.grid.minor = element_blank(), 
+        panel.spacing = unit(half_line, "pt"), panel.margin.x = NULL, 
+        panel.spacing.y = NULL, panel.ontop = FALSE, 
+        
+        #Facet Labels
+        strip.background = element_blank(),
+        strip.text = element_text(face="bold",colour = "black", size = rel(1.5)),
+        strip.text.x = element_text(margin = margin(t = half_line,
+                                                    b = half_line)), 
+        strip.text.y = element_text(angle = 0, 
+                                    margin = margin(l = half_line, 
+                                                    r = half_line)),
+        strip.switch.pad.grid = unit(5, "lines"),
+        strip.switch.pad.wrap = unit(5, "lines"), 
+        
+        
+        plot.background = element_rect(colour = rgb(119,136,153, max = 255)), 
+        plot.title = element_text(size = rel(1.5), 
+                                  margin = margin(b = half_line * 1.2)),
+        plot.margin = margin(4*half_line, 4*half_line, 4*half_line, 4*half_line),
+        complete = TRUE)
 }
-
-getmode <- function(v) {
-  uniqv <- unique(v[!is.nan(v)])
-  uniqv[which.max(tabulate(match(v, uniqv)))]
-}
-
-getmean <- function(v) {
-  mean(v, na.rm = T)
-}
-
-getgeomean <- function(x) {
-  10^mean(log10(x + 1))
-}
-
 
 #General Data Cleanup ----
 VanSeb <- as.matrix(read.csv("ModelGrid/vansebillemodel_abundance.csv", header = F))
@@ -70,7 +101,7 @@ Locations <- LocationWindCorrected %>%
 Locations$LonErik<- ifelse(Locations$Lon < 0, Locations$Lon + 360, Locations$Lon)
 coordinates(Locations) <- ~LonErik + Lat
 
-#Create a raster of Eriks model----
+#Create a raster of Van Sebille model----
 Van <- raster(VanSeb, xmn = 0, xmx= 360, ymn=-90, ymx=90, crs="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 plot(Van)
 plot(Locations, add = T) #Check to make sure the datasets are aligned properly.
@@ -133,6 +164,7 @@ LocationFramBasinSet <- LocationFram %>%
 hist(log(LocationFramBasinSet$km2 + 1))
 summary(LocationFramBasinSet$censored)
 
+# Predict the nondetects ----
 fit = cenros(LocationFramBasinSet$km2, LocationFramBasinSet$censored)
 
 hist(log(fit$modeled))
@@ -155,42 +187,32 @@ Dataset <- LocationFramBasinSet
 hist(Dataset$Date)
 hist(Dataset$fitlogkm2)
 hist(Dataset$OceanScaled)
-
 summary(Dataset)
 
-#Dataset %>%
-#  filter(Mesh.Size < 300)
-
-#time to concentration
-time <- gam(km2 ~ as.factor(Basin) + s(Date), data = Dataset, family = tw())
+#Model Using just a GAM ----
+time <- gam(km2 ~ as.factor(Basin) + OceanScaled + s(Date), data = Dataset, family = tw())
 summary(time)
 plot(time)
 
-time_bias <- gam(OceanScaled ~ s(Date), data = Dataset, family = tw())
-summary(time_bias)
-plot(time_bias)
+summary_uncertainties <- Dataset %>%
+    group_by(Year, Basin) %>%
+    summarize(count = n(), cv = sd(fitkm2)/mean(fitkm2))
 
+ggplot(summary_uncertainties) + geom_point(aes(x = Year, y = count, color = Basin, shape = Basin), size = 5, alpha = 0.75) + scale_color_viridis_d() + scale_y_log10() + theme_gray_etal()
+ggplot(summary_uncertainties) + geom_point(aes(x = Year, y = cv, color = Basin, shape = Basin), size = 5, alpha = 0.75) + scale_y_continuous(limits = c(0, 15)) + scale_color_viridis_d()  + theme_gray_etal()
 ggplot(Dataset, aes(x = DateFormatted, y = OceanScaled)) + geom_smooth() + geom_rug(sides="b", alpha = 0.1) + facet_wrap(.~Basin, scales = "free") + theme_classic()
 
-
-hist(log(Dataset$km2+1))
-#Using this currently
 gamsmoothresiduals = gam(fitlogkm2 ~ OceanScaled + as.factor(Basin), data=Dataset)
 summary(gamsmoothresiduals)
 AIC(gamsmoothresiduals)
 plot(gamsmoothresiduals)
 qq.gam(gamsmoothresiduals, type = "response")
 
-
 Dataset$PredictedVals <- predict.gam(gamsmoothresiduals, Dataset, type = "response")
-#Dataset$PredictedVals <- predict.lm(gamsmoothresiduals, Dataset, type = "response")
 
 Dataset$Residuals <- Dataset$fitlogkm2 - Dataset$PredictedVals
 
 hist(Dataset$Residuals)
-#Dataset$Residualslog <- log(Dataset$Residuals)
-
-#Dataset$Residuals2 <- residuals.gam(gamsmoothresiduals, type = "deviance")
 
 #Visualize difference in residuals
 #ggplot() + geom_point(aes(x = residuals.gam(gamsmoothresiduals, type = "deviance"), y = residuals.gam(gamsmoothresiduals, type = "response"))) + theme_classic() + scale_y_log10()
@@ -208,7 +230,6 @@ predictionse <- predict.gam(gamsmoothresidualsdate, dftimetrend, type = "respons
 dftimetrend$lower <- dftimetrend$prediction - (2* predictionse$se.fit)
 dftimetrend$upper <- dftimetrend$prediction + (2* predictionse$se.fit)
 
-#dftimetrend$se <- gamsmoothresidualsdate$
 mean_count_concentration_km2 = mean(Dataset$fitkm2)
 mean_mass_concentration_g_km2 = mean(Dataset$fitkm2) *  1.36 * 10^-2 
 total_ocean_area_km2 = 361900000
@@ -262,38 +283,4 @@ yearly_mean <- dftimetrend %>%
 
 write.csv(yearly_mean, "yearly_mean.csv")
 
-#Map with residuals ----
-OceanRankedModel <- data.frame(OceanScaled = as.vector(OceanScaled), Area = as.vector(Area), Basin = as.vector(OceanBasin)) %>%
-  mutate(Basin = ifelse(Basin == 1, "North Pacific", ifelse(Basin == 2, "South Pacific", ifelse(Basin == 3, "North Atlantic", ifelse(Basin == 4, "South Atlantic", ifelse(Basin == 5, "Indian", ifelse(Basin == 6, "Mediterranean", NA)))))))
-
-OceanRankedModel$Prediction_Grid <- predict.gam(gamsmoothresiduals, OceanRankedModel, type = "response")
-
-Days = as.numeric(seq(as.Date("1980/1/1"), as.Date("2020/1/1"), "year")) - as.numeric(as.Date("1979-01-15"))
-
-OceanRankedModel$Date <- as.numeric(as.Date("2019/1/1")) - as.numeric(as.Date("1979-01-15"))
-OceanRankedModel$Residual <- predict.gam(gamsmoothresidualsdate, OceanRankedModel, type="response")
-OceanRankedModel$predicted_concentration_num_km2 <- exp(OceanRankedModel$Prediction + OceanRankedModel$Residual)
-
-OceanPrediction <- OceanRankedModel$predicted_concentration_num_km2
-dim(OceanPrediction)<- c(361, 181) #When this gets flipped, the map looks right. 
-OceanPrediction <- t(OceanPrediction)
-#OceanPrediction <- t(OceanPrediction)
-OceanPredictionRaster <- raster(OceanPrediction, xmn = 1, xmx= 361, ymn=-90, ymx=90, crs="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
-#writeRaster(OceanPredictionRaster, paste(WD,"/", Y, ".tif", sep=""), format="GTiff", overwrite=TRUE)
-plot(OceanPredictionRaster)
-
-raster <- as(OceanPredictionRaster, "SpatialPixelsDataFrame")
-raster <- as.data.frame(raster)
-colnames(raster) <- c("value", "x", "y")
-raster$rank <- rank(raster$value)/length(raster$value)
-max(raster$rank)
-
-Plot <- ggplot(data=raster) + 
-  geom_tile(aes(x=x,y=y,fill=rank)) + 
-  coord_equal() +
-  scale_fill_distiller(palette = "Spectral", breaks = c(0, 0.25, 0.5, 0.75, 1), labels = round(quantile(raster$value, c(0, 0.25, 0.5, 0.75, 1)), 0) ) +
-  #scale_fill_brewer(type = "div", palette = "RdYlBu",  drop = F) +
-  theme_gray_etal() + 
-  theme(panel.background = element_rect(fill = "darkslategray")) + 
-  labs(x = "Longitude", y = "Latitude", fill = "Concentration (log10(#/km2))", title = "2019") #+ annotation_custom(ggplotGrob(YearPlot), xmin = 50, ymin = 30, xmax = 120, ymax = 70)
 
