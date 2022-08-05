@@ -26,21 +26,23 @@ FinalMerge.csv: Ignore, intermediate file.
 
 Gewert.csv: Gewert, B., Ogonowski, M., Barth, A., & MacLeod, M. (2017). Abundance and composition of near surface microplastics and plastic debris in the Stockholm Archipelago, Baltic Sea. Marine Pollution Bulletin, 120(1-2), 292–302.
 
-Goldstein.csv
+Goldstein.csv: Goldstein, M. C., Titmus, A. J., & Ford, M. (2013). Scales of spatial heterogeneity of plastic marine debris in the northeast pacific ocean. PloS One, 8(11), e80020.
 
-ICELAND April 2019.xlsx
+Greenland 2019_: 5 Gyres
 
-Lebreton2018_... 
+ICELAND April 2019.xlsx: 5 Gyres
 
-Morris.csv
+Lebreton2018_... : L. Lebreton, B. Slat, F. Ferrari, B. Sainte-Rose, J. Aitken, R. Marthouse, S. Hajbane, S. Cunsolo, A. Schwarz, A. Levivier, K. Noble, P. Debeljak, H. Maral, R. Schoeneich-Argent, R. Brambini & J. Reisser. (2018). Evidence that the Great Pacific Garbage Patch is rapidly accumulating plastic. Scientific Reports, 8(4666). https://doi.org/10.1038/s41598-018-22939-w
 
-Ocean2.csv
+Morris.csv: Morris, R.J. (1980) Floating Plastic Debris in the. (n.d.). Https://www.scirp.org › Reference › Referencespapershttps://www.scirp.org › Reference › Referencespapers. https://www.scirp.org/%28S%28vtj3fa45qm1ean45vvffcz55%29%29/reference/referencespapers.aspx?referenceid=3043921
 
-Osha2.csv
+Ocean2.csv: 5 Gyres, Ocean Research Project
 
-Olgac2.csv
+Osha2.csv: 5 Gyres, Osha Rudduck
 
-Panti2.csv
+Olgac2.csv: Güven, O., Gökdağ, K., Jovanović, B., & Kıdeyş, A. E. (2017). Microplastic litter composition of the Turkish territorial waters of the Mediterranean Sea, and its occurrence in the gastrointestinal tract of fish. Environmental Pollution , 223, 286–294.
+
+Panti2.csv: Panti, Cristina, et al. "Occurrence, relative abundance and spatial distribution of microplastics and zooplankton NW of Sardinia in the Pelagos Sanctuary Protected Area, Mediterranean Sea." Environmental Chemistry 12.5 (2015): 618-626.
 
 PlasticCha2.csv
 
