@@ -12,19 +12,19 @@ Cozar2.csv: Cózar, A., Sanz-Martín, M., Martí, E., González-Gordillo, J. I.,
 
 Cozar3.csv: Cózar, A., Martí, E., Duarte, C. M., García-de-Lomas, J., van Sebille, E., Ballatore, T. J., Eguíluz, V. M., González-Gordillo, J. I., Pedrotti, M. L., Echevarría, F., Troublè, R., & Irigoien, X. (n.d.). The Arctic Ocean as a dead end for floating plastics in the North Atlantic branch of the Thermohaline Circulation. Science Advances, 3(4), e1600582.
 
-DataUpate10.csv
+DataUpate10.csv: Ignore, intermediate file. 
 
-Day.csv
+Day.csv: Day, R. H., & Shaw, D. G. (1989). S. E. Ignell. 1990. Quantitative distribution and characteristics of marine debris in the North Pacific Ocean, 1984-88. Proceedings of the Second International Conference on Marine Debris, 2–7.
 
-DayClausen1986.csv
+DayClausen1986.csv: Day, R. H., Clausen, D., & Ignell, S. E. (1986). Distribution and Density of Plastic Particulates in the North Pacific Ocean in 1986. Northwest and Alaska Fisheries Center Auke Bay Laboratory, National Marine Fisheries Service, NOAA.
 
-Doyle.csv
+Doyle.csv: Doyle, M. J., Watson, W., Bowlin, N. M., & Sheavly, S. B. (2011). Plastic particles in coastal pelagic ecosystems of the Northeast Pacific ocean. Marine Environmental Research, 71(1), 41–52.
 
-Eriksen.csv
+Eriksen.csv: Eriksen, M., Lebreton, L. C. M., Carson, H. S., Thiel, M., Moore, C. J., Borerro, J. C., Galgani, F., Ryan, P. G., & Reisser, J. (2014). Plastic Pollution in the World’s Oceans: More than 5 Trillion Plastic Pieces Weighing over 250,000 Tons Afloat at Sea. PloS One, 9(12), e111913.
 
-FinalMerge.csv
+FinalMerge.csv: Ignore, intermediate file. 
 
-Gewert.csv
+Gewert.csv: Gewert, B., Ogonowski, M., Barth, A., & MacLeod, M. (2017). Abundance and composition of near surface microplastics and plastic debris in the Stockholm Archipelago, Baltic Sea. Marine Pollution Bulletin, 120(1-2), 292–302.
 
 Goldstein.csv
 
