@@ -44,28 +44,28 @@ Olgac2.csv: Güven, O., Gökdağ, K., Jovanović, B., & Kıdeyş, A. E. (2017). 
 
 Panti2.csv: Panti, Cristina, et al. "Occurrence, relative abundance and spatial distribution of microplastics and zooplankton NW of Sardinia in the Pelagos Sanctuary Protected Area, Mediterranean Sea." Environmental Chemistry 12.5 (2015): 618-626.
 
-PlasticCha2.csv
+PlasticCha2.csv: 5 Gyres, Plastic Change
 
-SEAED3.csv
+SEAED3.csv: Sea Education
 
-SEAEd1.csv
+SEAEd1.csv: Sea Education
 
-SEAEd2.csv
+SEAEd2.csv: Sea Education
 
-SeaChange2.csv
+SeaChange2.csv: 5 Gyres SEA Change 2015
 
-SeaDragon2.csv
+SeaDragon2.csv: Trawl on Sea Dragon - eXXpedition 2014
 
-SeaShepard2.csv
+SeaShepard2.csv: 5 Gyres Sea Shepard
 
-Shaw2.csv
+Shaw2.csv: Shaw, D. G., & Mapes, G. A. (1979). Surface circulation and the distribution of pelagic tar and plastic. Marine Pollution Bulletin, 10(6), 160–162.
 
-Suaria2.csv
+Suaria2.csv: Suaria, G., Avio, C. G., Mineo, A., Lattin, G. L., Magaldi, M. G., Belmonte, G., Moore, C. J., Regoli, F., & Aliani, S. (2016). The Mediterranean Plastic Soup: synthetic polymers in Mediterranean surface waters. Scientific Reports, 6, 37551.
 
-Syakti.csv
+Syakti.csv: Syakti, A. D., Bouhroum, R., Hidayati, N. V., Koenawan, C. J., Boulkamh, A., Sulistyo, I., Lebarillier, S., Akhlus, S., Doumenq, P., & Wong-Wah-Chung, P. (2017). Beach macro-litter monitoring and floating microplastic in a coastal area of Indonesia. Marine Pollution Bulletin, 122(1-2), 217–225.
 
-Trawl CANARY-IRELAND May 2019.xlsx
+Trawl CANARY-IRELAND May 2019.xlsx: 5 Gyres
 
-Viking2.csv
+Viking2.csv: 5 Gyres Viking June 2016 
 
-Zhao2.csv
+Zhao2.csv: Zhao, S., Zhu, L., Wang, T., & Li, D. (2014). Suspended microplastics in the surface water of the Yangtze Estuary System, China: First observations on occurrence, distribution. Marine Pollution Bulletin, 86(1), 562–568.
