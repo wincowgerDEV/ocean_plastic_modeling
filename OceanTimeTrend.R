@@ -191,7 +191,7 @@ hist(Dataset$OceanScaled)
 summary(Dataset)
 
 #Model Using just a GAM ----
-time <- gam(km2 ~ as.factor(Basin) + OceanScaled + s(Date), data = Dataset, family = tw())
+time <- gam(fitkm2 ~ as.factor(Basin) + OceanScaled + s(Date), data = Dataset, family = tw())
 summary(time)
 plot(time)
 
@@ -203,7 +203,11 @@ write.csv(summary_uncertainties, "uncertainties.csv")
 
 ggplot(summary_uncertainties) + geom_point(aes(x = Year, y = count, color = Basin, shape = Basin), size = 5, alpha = 0.75) + scale_color_viridis_d() + scale_y_log10() + theme_gray_etal()
 ggplot(summary_uncertainties) + geom_point(aes(x = Year, y = cv, color = Basin, shape = Basin), size = 5, alpha = 0.75) + scale_y_continuous(limits = c(0, 15)) + scale_color_viridis_d()  + theme_gray_etal()
-ggplot(Dataset, aes(x = DateFormatted, y = OceanScaled)) + geom_smooth() + geom_rug(sides="b", alpha = 0.1) + facet_wrap(.~Basin, scales = "free") + theme_classic()
+#ggplot(summary_uncertainties) + geom_histogram(aes(x = cv, fill = Basin, shape = Basin), size = 5, alpha = 0.75) + scale_y_continuous(limits = c(0, 15)) + scale_color_viridis_d()  + theme_gray_etal()
+
+summary(summary_uncertainties$cv)
+
+ggplot(Dataset, aes(x = DateFormatted, y = fitkm2)) + geom_smooth() + geom_rug(sides="b", alpha = 0.1) + facet_wrap(.~Basin, scales = "free") + theme_classic()
 
 gamsmoothresiduals = gam(fitlogkm2 ~ OceanScaled + as.factor(Basin), data=Dataset)
 summary(gamsmoothresiduals)
