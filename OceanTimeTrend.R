@@ -221,6 +221,9 @@ Dataset$Residuals <- Dataset$fitlogkm2 - Dataset$PredictedVals
 
 hist(Dataset$Residuals)
 
+write.csv(Dataset, "model_dataset.csv")
+
+
 #Visualize difference in residuals
 #ggplot() + geom_point(aes(x = residuals.gam(gamsmoothresiduals, type = "deviance"), y = residuals.gam(gamsmoothresiduals, type = "response"))) + theme_classic() + scale_y_log10()
 
