@@ -221,7 +221,7 @@ Dataset$Residuals <- Dataset$fitlogkm2 - Dataset$PredictedVals
 
 hist(Dataset$Residuals)
 
-write.csv(Dataset, "model_dataset.csv")
+write.csv(Dataset, "TrawlData/ProcessedFiles/model_dataset.csv")
 
 
 #Visualize difference in residuals
