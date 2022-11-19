@@ -91,13 +91,25 @@ OceanLand <- as.matrix(read.csv("ModelGrid/mask.csv", header = F))
 LocationWindCorrected <- read.csv("TrawlData/ProcessedFiles/LocationsCleanedWithWind.csv")
 corrected <- unique(LocationWindCorrected$Source[LocationWindCorrected$Corrected == "Yes"])
 
+Locations_full_test <- LocationWindCorrected
+Locations_full_test$LonErik <- ifelse(Locations_full_test$Lon < 0, Locations_full_test$Lon + 360, Locations_full_test$Lon)
+coordinates(Locations_full_test) <- ~LonErik + Lat
+
 #with wind
+
+change_correction <- c("M. Eriksen", "F.Galgani", "H.Carson", "J. Reisser", "C. Moore")
+
 Locations <- LocationWindCorrected %>%
+  mutate(Corrected = ifelse(Source %in% change_correction, "No", Corrected)) %>%
+  mutate(CorrectedConcentration = ifelse(Source %in% change_correction, WindStandard(km2, wind), CorrectedConcentration)) %>%
   dplyr::filter(Corrected == "No") %>%
   dplyr::mutate(km2 = CorrectedConcentration) %>%
   dplyr::filter(!is.na(km2)) %>%
   dplyr::mutate(Latcopy = Lat) %>%
-  filter(Mesh.Size > 50)
+  filter(Mesh.Size >= 50)
+
+anti_locations <- LocationWindCorrected %>%
+    anti_join(Locations %>% select(X.1))
 
 Locations$LonErik<- ifelse(Locations$Lon < 0, Locations$Lon + 360, Locations$Lon)
 coordinates(Locations) <- ~LonErik + Lat
@@ -105,6 +117,7 @@ coordinates(Locations) <- ~LonErik + Lat
 #Create a raster of Van Sebille model----
 Van <- raster(VanSeb, xmn = 0, xmx= 360, ymn=-90, ymx=90, crs="+proj=longlat +datum=WGS84 +no_defs +ellps=WGS84 +towgs84=0,0,0")
 plot(Van)
+plot(Locations_full_test, add = T)
 plot(Locations, add = T) #Check to make sure the datasets are aligned properly.
 
 OceanLandDF <- as.data.frame(as.vector(OceanLand))
@@ -191,9 +204,24 @@ hist(Dataset$OceanScaled)
 summary(Dataset)
 
 #Model Using just a GAM ----
-time <- gam(fitkm2 ~ as.factor(Basin) + OceanScaled + s(Date), data = Dataset, family = tw())
+time <- gam(fitkm2 ~ Basin + OceanScaled + s(Date), data = Dataset, family = tw())
 summary(time)
 plot(time)
+qq.gam(time, type = "response")
+
+Basin = as.character(OceanLandDFScaled$Basin)
+Basins = ifelse(Basin == 1, "North Pacific", ifelse(Basin == 2, "South Pacific", ifelse(Basin == 3, "North Atlantic", ifelse(Basin == 4, "South Atlantic", ifelse(Basin == 5, "Indian", ifelse(Basin == 6, "Mediterranean", NA))))))
+
+global_basins <- expand.grid(paste(Basins, OceanLandDFScaled$scaled, sep = "_"), Date = seq(0,14752, by = 365)) %>%
+                            mutate(Basin = gsub("_.*", "", Var1), OceanScaled = as.numeric(gsub(".*_", "", Var1))) %>%
+                            select(-Var1)
+
+global_basins$PredictedVals <- predict.gam(time, global_basins, type = "response")
+
+global_basins_2 <- global_basins %>%
+    group_by(Date) %>%
+    summarise(sum = sum(PredictedVals, na.rm = T))
+#This approach definitely has some issues, very large numbers. Likely due to poor qq plot fits. 
 
 summary_uncertainties <- Dataset %>%
     group_by(Year, Basin) %>%
