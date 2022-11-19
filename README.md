@@ -6,6 +6,11 @@
 - OceanTimeTrend.R: Creates the ocean plastic time trend model. 
 - WindAnalysis.R: Conducts wind correction for the ocean plastic observations. 
 - SessionInfo.txt: Current working libraries, softwares, and versions. 
+- uncertainties.csv: Uncertainty metrics through time for the raw data.
+- AnnualDataPoints.csv has the number of data points per basin per 5 years. 
+- timetrend.csv has the confidence intervals on the time trend estimate for every day of the year. 
+- yearlymean.csv is the mean concentration for the whole year, you could just use the end of year estimate from the time trend and make a table for that instead of this. 
+- modeldataset.csv this is the actual dataset that we used to create the model.
 
 ## Full ocean observation dataset for modeling is [HERE](https://github.com/wincowgerDEV/ocean_plastic_modeling/blob/main/TrawlData/ProcessedFiles/LocationsCleanedWithWind.csv)
 Metadata:
