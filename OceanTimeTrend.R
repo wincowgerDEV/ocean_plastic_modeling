@@ -165,7 +165,7 @@ LocationFram <- LocationFram %>%
   mutate(Day = ifelse(is.na(Day), 15, Day))
 
 LocationFram$Date <- as.numeric(as.Date(with(LocationFram, paste(Year, Month, Day, sep="-")), "%Y-%m-%d")) - as.numeric(as.Date("1971-10-12")) #Cycle through the date creating new raster each time. 
-LocationFram$DateFormatted <- (as.Date(LocationFram$Date,origin = "1979-01-15"))
+LocationFram$DateFormatted <- (as.Date(LocationFram$Date,origin = "1971-10-12"))
 
 LocationFram <- filter(LocationFram, !is.na(Date)) %>%
   filter(!is.na(Basin)) %>%
@@ -275,7 +275,7 @@ plot(gamsmoothresidualsdate)
 qq.gam(gamsmoothresidualsdate, type = "response")
 
 dftimetrend <- data.frame(Date = seq(0,14752))
-dftimetrend$DateFormatted <- (as.Date(dftimetrend$Date,origin = "1979-01-15"))
+dftimetrend$DateFormatted <- (as.Date(dftimetrend$Date,origin = "1971-10-12"))
 dftimetrend$prediction <- predict.gam(gamsmoothresidualsdate, dftimetrend, type = "response")
 predictionse <- predict.gam(gamsmoothresidualsdate, dftimetrend, type = "response", se.fit = T)
 dftimetrend$lower <- dftimetrend$prediction - (2* predictionse$se.fit)
