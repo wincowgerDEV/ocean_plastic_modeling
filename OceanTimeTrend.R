@@ -98,15 +98,28 @@ coordinates(Locations_full_test) <- ~LonErik + Lat
 #with wind
 
 change_correction <- c("M. Eriksen", "F.Galgani", "H.Carson", "J. Reisser", "C. Moore")
+change_wind <- c("M. Eriksen", 
+                 "Wong et al. 1974", 
+                 "F.Galgani", 
+                 "Shaw & Mapes  1979",
+                 "Carpenter 1972",
+                 "Shaw 1975",
+                 "H.Carson", 
+                 "J. Reisser", 
+                 "C. Moore")
+
+# infer wind values 
+set.seed(3984)
+LocationWindCorrected$wind[is.na(LocationWindCorrected$wind)] <- sample(LocationWindCorrected$wind[!is.na(LocationWindCorrected$wind)], sum(is.na(LocationWindCorrected$wind)), replace = T)
 
 Locations <- LocationWindCorrected %>%
   mutate(Corrected = ifelse(Source %in% change_correction, "No", Corrected)) %>%
-  mutate(CorrectedConcentration = ifelse(Source %in% change_correction, WindStandard(km2, wind), CorrectedConcentration)) %>%
+  mutate(CorrectedConcentration = ifelse(Source %in% change_wind, WindStandard(km2, wind), CorrectedConcentration)) %>%
   dplyr::filter(Corrected == "No") %>%
   dplyr::mutate(km2 = CorrectedConcentration) %>%
   dplyr::filter(!is.na(km2)) %>%
   dplyr::mutate(Latcopy = Lat) %>%
-  filter(Mesh.Size >= 50)
+  filter(Mesh.Size > 50)
 
 anti_locations <- LocationWindCorrected %>%
     anti_join(Locations %>% select(X.1))
@@ -151,7 +164,7 @@ LocationFram <- Locations@data
 LocationFram <- LocationFram %>%
   mutate(Day = ifelse(is.na(Day), 15, Day))
 
-LocationFram$Date <- as.numeric(as.Date(with(LocationFram, paste(Year, Month, Day, sep="-")), "%Y-%m-%d")) - as.numeric(as.Date("1979-01-15")) #Cycle through the date creating new raster each time. 
+LocationFram$Date <- as.numeric(as.Date(with(LocationFram, paste(Year, Month, Day, sep="-")), "%Y-%m-%d")) - as.numeric(as.Date("1971-10-12")) #Cycle through the date creating new raster each time. 
 LocationFram$DateFormatted <- (as.Date(LocationFram$Date,origin = "1979-01-15"))
 
 LocationFram <- filter(LocationFram, !is.na(Date)) %>%
@@ -308,7 +321,7 @@ ggplot(dftimetrend) +
   geom_line(aes(x = DateFormatted, y = oceantotalcountlower), size = 0.1) + 
   geom_line(aes(x = DateFormatted, y = oceantotalcountupper), size = 0.1) + 
   theme_gray_etal() + 
-  scale_y_log10(breaks = c(8 * 10^12, evennums * 10^13, evennums * 10^14), labels = c(8 , evennums * 10, evennums * 10^2), limits = c(8*10^12, 8*10^14)) +
+  scale_y_log10(breaks = c(8 * 10^12, evennums * 10^13, evennums * 10^14), labels = c(8 , evennums * 10, evennums * 10^2)) +
   #scale_y_log10(breaks = c( 5*10^12, 10^13, 5*10^13, 10^14, 5*10^14), labels = c(5*10^12, 10^13, 5*10^13, 10^14, 5*10^14), limits = c(5*10^12, 5*10^14)) + 
   labs(x = "Year", y = "Trillions of Particles or Tens of Thousands of Metric Tonnes")
 
