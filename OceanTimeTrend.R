@@ -12,8 +12,6 @@ library(tidyr)
 library(plotly)
 library(NADA)
 
-
-
 #Functions ----
 theme_gray_etal<- function(base_size = 12, bgcolor = NA){
     half_line <- base_size/2
