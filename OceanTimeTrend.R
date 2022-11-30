@@ -13,6 +13,17 @@ library(plotly)
 library(NADA)
 
 #Functions ----
+WindStandard <- function(Concentration,Wind) {
+    Rise = 0.02
+    Depth = 0.2
+    WaveHeight <- ifelse(Wind == 0, 0, ifelse(Wind > 0 & Wind < 2, 0.1, ifelse(Wind >= 2 & Wind < 3.5, 0.25,ifelse(Wind >= 3.5 & Wind < 5, 0.8,ifelse(Wind >= 5 & Wind < 8.5, 1.25,ifelse(Wind >= 8.5 & Wind < 11, 2.25,NA)))))) #Based on beaufort scale
+    k = 0.4
+    Uw <- ((0.0012 *1.22* Wind^2)/1030)^(1/2) #Validated with Kukulka pretty much exactly the same value. This is correct now in m/s. #0.00012 * FakeWind from Reiser #Frictional Velocity of water from Pugh, #Wind Stress (https://marine.rutgers.edu/dmcs/ms501/2004/Notes/Wilkin20041014.htm)
+    Ao <- 1.5 * Uw * k * WaveHeight
+    DimCon <- Concentration / (1-exp(-1*Depth*Rise*(1/Ao)))
+    print(DimCon)
+}
+
 theme_gray_etal<- function(base_size = 12, bgcolor = NA){
     half_line <- base_size/2
     theme(
@@ -266,11 +277,13 @@ hist(Dataset$Residuals)
 write.csv(Dataset, "TrawlData/ProcessedFiles/model_dataset.csv")
 
 #Visualize difference in residuals
-#ggplot() + geom_point(aes(x = residuals.gam(gamsmoothresiduals, type = "deviance"), y = residuals.gam(gamsmoothresiduals, type = "response"))) + theme_classic() + scale_y_log10()
+#ggplot(, aes(x = Dataset$Date, y = Dataset$Residuals)) + geom_smooth() + geom_rug(sides="b", alpha = 0.1) + theme_classic()
 
 gamsmoothresidualsdate = gam(Residuals ~ s(Date), data=Dataset) 
 summary(gamsmoothresidualsdate)
 AIC(gamsmoothresidualsdate)
+plot(gamsmoothresidualsdate, shade = TRUE,  seWithMean = TRUE, pch = 16, cex = 0.8, ylab = "Smooth on Residuals", xlab = "Days Since 1979-1-15")
+
 plot(gamsmoothresidualsdate)
 qq.gam(gamsmoothresidualsdate, type = "response")
 
